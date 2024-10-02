@@ -38,6 +38,23 @@ public class BlogService {
 		// 값이 존재할 수도 있고 없을 수도 있는 상황을 명확하게 처리하기 위해 사용됩니다.
       return postRepository.findById(id).orElseThrow(() -> new Exception400("해당 게시글이 없습니다."));
 	}
+	
+	@Transactional
+	public Article update(Integer id, ArticleDTO dto) {
+		
+		// 수정 로직
+		Article articleEntity = postRepository
+				.findById(id).orElseThrow( () -> new Exception400("not found : " + id));
+		
+		// 객체 상태 값 변경
+		articleEntity.update(dto.getTitle(), dto.getContent());
+		// 영속성 컨테스트 -
+		// DB 에 save 처리
+		//postRepository.save(articleEntity);
+		
+		return articleEntity;
+		
+	}
 
 	
 	
